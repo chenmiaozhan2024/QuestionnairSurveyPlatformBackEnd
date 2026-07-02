@@ -68,6 +68,9 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.2
+      serve-static:
+        specifier: ^2.2.1
+        version: 2.2.1
       typeorm:
         specifier: ^1.0.0
         version: 1.0.0(mongodb@7.2.0)(mysql2@3.22.5(@types/node@22.20.0))(ts-node@10.9.2(@types/node@22.20.0)(typescript@5.9.3))
@@ -105,6 +108,9 @@ importers:
       '@types/passport-jwt':
         specifier: ^4.0.1
         version: 4.0.1
+      '@types/serve-static':
+        specifier: ^2.2.0
+        version: 2.2.0
       '@types/supertest':
         specifier: ^6.0.2
         version: 6.0.3
