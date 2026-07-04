@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { QuestionnaireModule } from './questionnaire/questionnaire.module';
+import { FileModule } from './file/file.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -17,6 +18,7 @@ import { QuestionnaireModule } from './questionnaire/questionnaire.module';
       }),
     }),
     QuestionnaireModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

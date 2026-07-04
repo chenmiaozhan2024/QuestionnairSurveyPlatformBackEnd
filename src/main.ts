@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
 import { join } from 'path';
+import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const reflector = app.get(Reflector);
@@ -26,6 +27,11 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'), {
     prefix: '/static', // 访问前缀
   });
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // ← 关键！自动转换类型
+    }),
+  );
 
   //开启跨域
   app.enableCors();
