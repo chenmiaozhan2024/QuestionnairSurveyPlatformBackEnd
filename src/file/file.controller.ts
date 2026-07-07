@@ -33,7 +33,6 @@ export class FileController {
     }
   }
   // 根据fileUUID获取文件
-  @Public()
   @Get(':fileUUID')
   async getFileByUUID(@Param('fileUUID') fileUUID: string) {
     const data = await this.fileService.findByUUID(fileUUID);
@@ -44,15 +43,14 @@ export class FileController {
   }
 
   // 获取所有文件
-  @Public()
   @Get()
   async getList(@Query() query: PageFileDto) {
     const { page, size } = query;
+    console.log('执行了获取文件');
 
     const data = await this.fileService.findAll(page, size);
     return data;
   }
-  @Public()
   //根据id删除文件
   @Delete()
   remove(@Query('id') id: string) {

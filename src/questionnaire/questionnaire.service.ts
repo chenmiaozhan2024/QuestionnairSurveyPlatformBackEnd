@@ -6,6 +6,7 @@ import {
   Questionnaire,
   QuestionnaireDocument,
 } from './schema/questionnaire.schema';
+import { BizException } from 'src/common/exceptions/biz.exception';
 
 @Injectable()
 export class QuestionnaireService {
@@ -13,7 +14,22 @@ export class QuestionnaireService {
     @InjectModel(Questionnaire.name)
     private questionnaireModel: Model<QuestionnaireDocument>,
   ) {}
+  async changeStatusById(id: string, newStatus: number) {
+    // 1. 更新数据库
+    const result = await this.questionnaireModel.findByIdAndUpdate(
+      id,
+      { $set: { status: newStatus } },
+      { new: true }, // 返回更新后的文档
+    );
 
+    // 2. 文档不存在
+    if (!result) {
+      throw new BizException('问卷不存在');
+    }
+
+    // 3. 返回更新后的数据
+    return {};
+  }
   // 分页查询问卷列表
   async findList(query: GetQuestionnaireQueryDto) {
     const { title, choice, page, size } = query;

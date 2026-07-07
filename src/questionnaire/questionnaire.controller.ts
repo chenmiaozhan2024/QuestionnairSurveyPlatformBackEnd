@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Query, Put } from '@nestjs/common';
 import { QuestionnaireService } from './questionnaire.service';
 import { GetQuestionnaireQueryDto } from './dto/questionnaire.dto';
 import { Public } from 'src/auth/decorators/public.decorator';
@@ -14,5 +14,11 @@ export class QuestionnaireController {
     // console.log(query);
 
     return this.questionnaireService.findList(query);
+  }
+  @Put('/questionnaire/status')
+  @Public()
+  changeStatus(@Query('id') id: string, @Query('newStatus') newStatus: number) {
+    return this.questionnaireService.changeStatusById(id, newStatus);
+    // console.log('id', id, 'newStatus', newStatus);
   }
 }
