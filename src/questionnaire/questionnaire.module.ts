@@ -6,11 +6,16 @@ import {
   Questionnaire,
   QuestionnaireSchema,
 } from './schema/questionnaire.schema';
+import {
+  QuestionnaireFillIn,
+  QuestionnaireFillInSchema,
+} from './schema/questionnaire-fill-in.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Questionnaire.name, schema: QuestionnaireSchema },
+      { name: QuestionnaireFillIn.name, schema: QuestionnaireFillInSchema },
     ]),
   ],
   controllers: [QuestionnaireController],

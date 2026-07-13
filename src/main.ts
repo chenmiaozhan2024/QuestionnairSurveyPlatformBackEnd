@@ -34,7 +34,7 @@ async function bootstrap() {
   );
 
   //开启跨域
-  app.enableCors();
+  app.enableCors({ origin: true, credentials: true });
   //设置端口
   await app.listen(process.env.PORT ?? 3001);
 }

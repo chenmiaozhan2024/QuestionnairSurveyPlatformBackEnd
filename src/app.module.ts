@@ -8,7 +8,11 @@ import { QuestionnaireModule } from './questionnaire/questionnaire.module';
 import { FileModule } from './file/file.module';
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      // envFilePath: '.env.production',
+      envFilePath: '.env',
+    }),
     AuthModule,
     // MongoDB 连接
     MongooseModule.forRootAsync({
