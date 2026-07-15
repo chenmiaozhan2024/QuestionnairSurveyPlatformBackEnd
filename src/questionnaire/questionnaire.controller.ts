@@ -10,22 +10,19 @@ export class QuestionnaireController {
   // @Public()
   @Get()
   async findAll(@Query() query: GetQuestionnaireQueryDto) {
-    // query 内包含 title / choice / page / size
-    // console.log(query);
     const result = await this.questionnaireService.findList(query);
-    // console.log('result', result);
 
     return result;
   }
   // 根据id修改状态
   @Put('/status')
-  @Public()
+  // @Public()
   changeStatus(@Query('id') id: string, @Query('newStatus') newStatus: number) {
     return this.questionnaireService.changeStatusById(id, newStatus);
     // console.log('id', id, 'newStatus', newStatus);
   }
   @Get('/getFillIn')
-  @Public()
+  // @Public()
   // 根据id获取所有答卷
   async getFillIn(
     @Query('id') id: string,
@@ -33,13 +30,13 @@ export class QuestionnaireController {
     @Query('size') size: number,
   ) {
     const result = await this.questionnaireService.findInList(id, page, size);
-    // console.log('result', result);
+    console.log('result');
 
     return result;
   }
   //根据id获取问卷详情
   @Get(':id')
-  @Public()
+  // @Public()
   async getFinllInById(@Param('id') id: string) {
     console.log('id');
 
@@ -50,7 +47,7 @@ export class QuestionnaireController {
   // 根据id获取单份答卷
   @Get('/getFillIn/:id')
   async getAnswerById(@Param('id') id: string) {
-    console.log('id', id);
+    console.log('id1111111', id);
 
     return this.questionnaireService.findFillInById(id);
   }

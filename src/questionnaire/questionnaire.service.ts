@@ -21,14 +21,12 @@ export class QuestionnaireService {
     private questionnaireFillInModel: Model<QuestionnaireFillInDocument>,
   ) {}
   //获取所有的答卷
-  async findInList(id: string, page: number, size: number) {
+  async findInList(surveyId: string, page: number, size: number) {
     const pageNum = Number(page);
     const sizeNum = Number(size);
     const skip = (pageNum - 1) * sizeNum;
 
-    // 通过 _id 前缀匹配该问卷下的所有答卷（如 id="0" 匹配 "0-s-4"、"0-s-5" 等）
-    const filter = { _id: { $regex: `^${id}` } };
-    console.log('filter', filter);
+    const filter = { surveyId };
 
     const [list, totalData] = await Promise.all([
       this.questionnaireFillInModel
@@ -38,12 +36,17 @@ export class QuestionnaireService {
         .lean(),
       this.questionnaireFillInModel.countDocuments(filter),
     ]);
+    list.forEach((item) => {
+      console.log(item);
+    });
 
     return {
       data: list.map((item) => ({
         id: item._id,
-        title: item.title,
-        info: item.info,
+        surveyId: item.surveyId ?? '',
+        title: item.title ?? '',
+        info: item.info ?? '',
+        collectTime: item.collectTime ?? null,
         answers:
           typeof item.answers === 'string'
             ? JSON.parse(item.answers)
@@ -72,7 +75,7 @@ export class QuestionnaireService {
   // 分页查询问卷列表
   async findList(query: GetQuestionnaireQueryDto) {
     const { title, choice, page, size } = query;
-    console.log(query);
+    // console.log(query);
 
     // // 组装筛选条件：模糊匹配 title，精确匹配 choice
     const filter: Record<string, any> = {};
@@ -128,18 +131,18 @@ export class QuestionnaireService {
     };
   }
   // 根据 id 获取单份填报答卷
-  async findFillInById(id: string) {
-    const item = await this.questionnaireFillInModel.findById(id).lean();
+  async findFillInById(surveyId: string) {
+    const item = await this.questionnaireFillInModel
+      .findOne({ surveyId })
+      .lean();
     if (!item) {
       throw new BizException('答卷不存在');
     }
-    // 联查父问卷，获取 title 和 files
+    // 联查父问卷，获取 title、info、files
     let title = '';
     let info: any = '';
     let files: any[] = [];
-    let surveyID = '';
     if (item.surveyId) {
-      surveyID = item.surveyId;
       const parent = await this.questionnaireModel
         .findById(item.surveyId)
         .lean();
@@ -151,7 +154,7 @@ export class QuestionnaireService {
     }
     return {
       id: item._id,
-      surveyID,
+      surveyId,
       title,
       info,
       files,

@@ -13,6 +13,12 @@ export class File {
 
   @Prop({ required: true, comment: '上传日期' })
   date: string;
+
+  @Prop({ comment: '文件大小(字节)' })
+  fileSize: number;
+
+  @Prop({ comment: '文件MD5哈希值' })
+  fileHash: string;
 }
 
 export const FileSchema = SchemaFactory.createForClass(File);
